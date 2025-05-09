@@ -7,5 +7,5 @@
 </template>
 
 <script setup>
-const { data, pending, error, refresh } = await useAsyncData('count', () => $fetch('/api/count'))
+// const { data, pending, error, refresh } = await useAsyncData('count', () => $fetch('/api/count'))
 </script>
