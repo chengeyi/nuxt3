@@ -125,4 +125,20 @@ onMounted(() => {
 // const toggleLogin = () => {
 //     isLoggedIn.value = !isLoggedIn.value
 // }
+
+
+
+// useFetch內的響應數據改變會自動重新觸發 但不能深度監聽 所以要拿computed包
+// const route = useRoute()
+// const currentPage = computed(() => parseInt(route?.query?.page) || 1)
+// const {
+//   pending,
+//   data: articlesResponse,
+//   error
+// } = await useFetch('/api/articles', {
+//   query: {
+//     page: currentPage,
+//     pageSize: 10
+//   }
+// })
 </script>
