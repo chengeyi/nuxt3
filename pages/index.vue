@@ -64,7 +64,27 @@ const { data: a, pending: b, error: c, refresh } = await useFetch('/api/count', 
 console.log(a.value)
 
 onMounted(() => {
-  // refresh()
+  let orgCategory = [
+    { categoryId: 1, name: 'A' },
+    { categoryId: 4, name: 'D' },
+    { categoryId: 3, name: 'C' },
+  ];
+  let category = [
+    { categoryId: 1, name: 'A' },
+    { categoryId: 2, name: 'B' },
+    { categoryId: 4, name: 'D' },
+  ];
+  const diffCategory = category.length !== orgCategory.length
+  ? category
+  : category.filter(
+    (item: { categoryId: number }, index: number, arr) => {
+      console.log('arr', arr);
+      const orgItem = orgCategory[index];
+      console.log('orgItem', orgItem);
+      return !orgItem || orgItem.categoryId !== item.categoryId;
+    }
+  );
+  console.log('diffCategory', diffCategory);
 })
 // const { data, pending, error, refresh } = await useFetch('/api/about', {
 //     // pick: ['name', 'counter'],

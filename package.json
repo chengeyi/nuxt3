@@ -16,6 +16,9 @@
   },
   "devDependencies": {
     "@nuxtjs/eslint-config-typescript": "^12.1.0",
-    "eslint": "^8.57.1"
+    "@pinia-plugin-persistedstate/nuxt": "^1.2.1",
+    "@pinia/nuxt": "^0.11.0",
+    "eslint": "^8.57.1",
+    "pinia": "^3.0.2"
   }
 }
