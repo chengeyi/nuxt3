@@ -59,8 +59,8 @@ const title: string = `${year} iThome 鐵人賽`
 const name = ref<string>('tony')
 const count = ref(1)
 const double = computed(() => count.value * 2)
-navigateTo({
-  name: 'articles-id',
-  params: { id: '123' },
-})
+// navigateTo({
+//   name: 'articles-id',
+//   params: { id: '123' },
+// })
 </script>

@@ -13,6 +13,7 @@
 <template>
   <div class="bg-white py-24">
     {{ a }}
+    {{ data }}
     <div class="flex flex-col items-center">
       <h1 class="text-6xl font-semibold text-gray-800">這裡是首頁</h1>
       <div class="my-4 flex flex-col space-y-4">
@@ -75,15 +76,15 @@ onMounted(() => {
     { categoryId: 4, name: 'D' },
   ];
   const diffCategory = category.length !== orgCategory.length
-  ? category
-  : category.filter(
-    (item: { categoryId: number }, index: number, arr) => {
-      console.log('arr', arr);
-      const orgItem = orgCategory[index];
-      console.log('orgItem', orgItem);
-      return !orgItem || orgItem.categoryId !== item.categoryId;
-    }
-  );
+    ? category
+    : category.filter(
+      (item: { categoryId: number }, index: number, arr) => {
+        console.log('arr', arr);
+        const orgItem = orgCategory[index];
+        console.log('orgItem', orgItem);
+        return !orgItem || orgItem.categoryId !== item.categoryId;
+      }
+    );
   console.log('diffCategory', diffCategory);
 })
 // const { data, pending, error, refresh } = await useFetch('/api/about', {
@@ -138,7 +139,30 @@ onMounted(() => {
 // } = await useFetch('/api/articles', {
 //   query: {
 //     page: currentPage,
-//     pageSize: 10
+//     pageSize: 10        
 //   }
 // })
+const {data} = useFetch("https://api.nuxtjs.dev/mountains")
+
+
+
+// definePageMeta({
+//   middleware: defineNuxtRouteMiddleware(() => {
+//     console.log(`[匿名中間件] 我是直接定義在頁面內的匿名中間件`)
+//   })
+// })
+
+definePageMeta({
+  middleware: 'random-redirect'
+})
+
+if (process.server) {
+  const headers = useRequestHeaders()
+  console.log('SSR headers:', headers)
+}
+
+
+const token = useCookie('sss')
+console.log(token.value)  // 讀取 cookie 值
+token.value = '456'
 </script>
