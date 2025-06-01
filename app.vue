@@ -1,11 +1,11 @@
 <template>
   <div>
-    <!-- <IronManWelcome />
+    <IronManWelcome />
     <CaHellow />
     {{ name }}
     {{ double }}
     <NuxtPage />
-    <NuxtLayout >
+    <NuxtLayout name="custom">
       <template #header>
         <p class="px-6 pt-4 text-xl text-green-500">這段會放置在 header 插槽</p>
       </template>
@@ -17,12 +17,12 @@
 <template #footer>
         <p class="px-6 pt-4 text-xl text-blue-500">這段會放置在 footer 插槽</p>
       </template>
-</NuxtLayout> -->
+</NuxtLayout>
 
     <div>
-      <NuxtLayout>
+      <!-- <NuxtLayout>
         <NuxtPage />
-      </NuxtLayout>
+      </NuxtLayout> -->
 
       <!-- 在伺服器端渲染時，<ClientOnly> 內的東西會被略過（顯示空白佔位）在 client 掛載後，元件才會實際被渲染出來 -->
       <!-- 在 Nuxt 使用 SSR（伺服器端渲染）時，頁面第一次是由伺服器產生 HTML 然後送到瀏覽器。

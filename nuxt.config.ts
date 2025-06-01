@@ -5,7 +5,7 @@ export default defineNuxtConfig({
   typescript: {
     typeCheck: true
   },
-  modules: ['@pinia/nuxt', '@pinia-plugin-persistedstate/nuxt'],
+  modules: ['@pinia/nuxt', '@pinia-plugin-persistedstate/nuxt', '@nuxtjs/seo'],
   runtimeConfig: {
     apiSecret: '怎麼可以讓你知道呢 :P',
     public: {

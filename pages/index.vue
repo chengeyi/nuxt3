@@ -13,13 +13,16 @@
 <template>
   <div class="bg-white py-24">
     {{ a }}
-    {{ data }}
+    {{ count }}
+    <button @click="count += 1">aaa</button>
     <div class="flex flex-col items-center">
       <h1 class="text-6xl font-semibold text-gray-800">這裡是首頁</h1>
       <div class="my-4 flex flex-col space-y-4">
         <NuxtLink to="/count/useAsyncData">前往 /count/useAsyncData</NuxtLink>
         <NuxtLink to="/count/useLazyAsyncData">前往 /count/useLazyAsyncData</NuxtLink>
         <NuxtLink to="/abbout/useFetch">前往 /about/useFetch</NuxtLink>
+        <NuxtLink to="/posts/222">前往 Posts</NuxtLink>
+        <button @click="toPost">前往 Posts</button>
         <div @click="() => refresh()">aaaa</div>
         <div @click="teat += 1">{{ teat }}</div>
       </div>
@@ -27,6 +30,20 @@
   </div>
 </template>
 <script setup lang="ts">
+// const { count, increment } = useCountersss()
+
+import { useCounter } from '@/composables/time/useDateFormat'
+const { count, increment } = useCountersss()
+
+const toPost = () => {
+  navigateTo({
+    name: 'posts-postid',  // 動態路由會轉成這個格式
+    params: {
+      postid: 123
+    },
+    query: { from: 'home' }
+  })
+}
 
 let teat = ref(1)
 const { data: a, pending: b, error: c, refresh } = await useFetch('/api/count', {
@@ -142,7 +159,7 @@ onMounted(() => {
 //     pageSize: 10        
 //   }
 // })
-const {data} = useFetch("https://api.nuxtjs.dev/mountains")
+const { data } = useFetch("https://api.nuxtjs.dev/mountains")
 
 
 
@@ -153,6 +170,7 @@ const {data} = useFetch("https://api.nuxtjs.dev/mountains")
 // })
 
 definePageMeta({
+  title:'123',
   middleware: 'random-redirect'
 })
 
