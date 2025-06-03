@@ -24,6 +24,7 @@
         <NuxtLink to="/posts/222">前往 Posts</NuxtLink>
         <button @click="toPost">前往 Posts</button>
         <div @click="() => refresh()">aaaa</div>
+        <div @click="() => bbbb()">bbbb</div>
         <div @click="teat += 1">{{ teat }}</div>
       </div>
     </div>
@@ -46,40 +47,40 @@ const toPost = () => {
 }
 
 let teat = ref(1)
-const { data: a, pending: b, error: c, refresh } = await useFetch('/api/count', {
-  //只從 JSON 物件中取的某幾個 key 組成新的物件。
-  // pick: ['name', 'counter'],
+// const { data: a, pending: b, error: c, refresh } = await useFetch('/api/count', {
+//   //只從 JSON 物件中取的某幾個 key 組成新的物件。
+//   // pick: ['name', 'counter'],
 
-  // 跟server: false效果一樣
-  // key: 'giftBagInfo-' + Date.now(),
+//   // 跟server: false效果一樣
+//   // key: 'giftBagInfo-' + Date.now(),
 
-  // 這樣會直接先印出console.log(a.value) 並且拿不到資料 是null
-  // server: false,
+//   // 這樣會直接先印出console.log(a.value) 並且拿不到資料 是null
+//   // server: false,
 
-  // 預設為 true，請求將會立即觸發。 或許可以用來判斷當小時打從登入頁回來就先是false等到狀態變了在watch
-  // immediate: false,
+//   // 預設為 true，請求將會立即觸發。 或許可以用來判斷當小時打從登入頁回來就先是false等到狀態變了在watch
+//   // immediate: false,
 
-  // 監聽 ref 或 reactive 響應式資料發生變化時，觸發重新請求資料，適用於資料分頁、過濾結果或搜尋等情境。
-  // watch: [teat],
+//   // 監聽 ref 或 reactive 響應式資料發生變化時，觸發重新請求資料，適用於資料分頁、過濾結果或搜尋等情境。
+//   // watch: [teat],
 
-  // 修改加工 handler 回傳結果的函數。 
-  // transform: (a: any) => {
-  //   console.log('transform', a)
-  //   // 這裡可以對資料進行轉換或處理
-  //   a = 1;
-  //   return a;
-  // },
+//   // 修改加工 handler 回傳結果的函數。 
+//   // transform: (a: any) => {
+//   //   console.log('transform', a)
+//   //   // 這裡可以對資料進行轉換或處理
+//   //   a = 1;
+//   //   return a;
+//   // },
 
-  // csr才會印出response
-  onResponse({ request, response, options }) {
-    console.log('request', request)
-    console.log('response', response)
-    console.log('response', response._data)
-    // 處理請求回應的資料
-    return response._data
-  }
-})
-console.log(a.value)
+//   // csr才會印出response
+//   onResponse({ request, response, options }) {
+//     console.log('request', request)
+//     console.log('response', response)
+//     console.log('response', response._data)
+//     // 處理請求回應的資料
+//     return response._data
+//   }
+// })
+// console.log(a.value)
 
 onMounted(() => {
   let orgCategory = [
@@ -170,7 +171,7 @@ const { data } = useFetch("https://api.nuxtjs.dev/mountains")
 // })
 
 definePageMeta({
-  title:'123',
+  title: '123',
   middleware: 'random-redirect'
 })
 
@@ -183,4 +184,43 @@ if (process.server) {
 const token = useCookie('sss')
 console.log(token.value)  // 讀取 cookie 值
 token.value = '456'
+
+const shouldFetch = ref(false);
+const flag = ref(false);
+if (process.server) {
+  count.value += 1
+  console.log('在伺服器執行')
+  console.log(count.value)
+  console.log(shouldFetch.value)
+  shouldFetch.value = true
+  setTimeout(() => {
+    if(shouldFetch.value) {
+      // flag.value = true
+    }
+    console.log(shouldFetch.value)
+  }, 5000)
+}
+
+const { data: a, refresh} = await useFetch('/api/count', {
+  immediate: shouldFetch.value,
+  // immediate: false,
+  // watch: [flag],
+  onResponse({ response }) {
+    console.log('resssssssssssssssponse', response._data)
+  }
+})
+console.log(a.value)
+
+const bbbb = () => {
+  flag.value = !flag.value
+}
+
+if (process.client) {
+  // 這段只會在瀏覽器執行（例如 DOM 操作、localStorage）
+  console.log('在用戶端執行')
+  console.log(count.value)
+  setTimeout(() => {
+    console.log(count.value)
+  }, 2000)
+}
 </script>
