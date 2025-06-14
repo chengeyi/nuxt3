@@ -12,6 +12,15 @@
   </template> -->
 <template>
   <div class="bg-white py-24">
+
+    <ClientOnly>
+      <GoogleLogin :callback="callback" prompt />
+    </ClientOnly>
+
+    <button type="button" @click="handleGoogleLogin">
+      使用 Google 繼續
+    </button>
+    使用者資訊:{{ userInfo }}
     {{ a }}
     {{ count }}
     <button @click="count += 1">aaa</button>
@@ -32,6 +41,7 @@
 </template>
 <script setup lang="ts">
 // const { count, increment } = useCountersss()
+import { googleTokenLogin } from 'vue3-google-login'
 
 import { useCounter } from '@/composables/time/useDateFormat'
 const { count, increment } = useCountersss()
@@ -194,14 +204,14 @@ if (process.server) {
   console.log(shouldFetch.value)
   shouldFetch.value = true
   setTimeout(() => {
-    if(shouldFetch.value) {
+    if (shouldFetch.value) {
       // flag.value = true
     }
     console.log(shouldFetch.value)
   }, 5000)
 }
 
-const { data: a, refresh} = await useFetch('/api/count', {
+const { data: a, refresh } = await useFetch('/api/count', {
   immediate: shouldFetch.value,
   // immediate: false,
   // watch: [flag],
@@ -222,5 +232,51 @@ if (process.client) {
   setTimeout(() => {
     console.log(count.value)
   }, 2000)
+}
+
+// 環境變數
+const runtimeConfig = useRuntimeConfig()
+// const { apiBase } = runtimeConfig.public
+console.log(toRaw(runtimeConfig))
+// console.log(apiBase)
+
+// 只能在 server 上取得
+const secret = runtimeConfig.apiSecret
+console.log('secret', secret)
+
+
+// google oauth
+const callback = (response: any) => {
+  console.log(response)
+}
+
+const { googleClientId: GOOGLE_CLIENT_ID } = runtimeConfig.public
+// const handleGoogleLogin = () => {
+//   googleTokenLogin({
+//     clientId: GOOGLE_CLIENT_ID
+//   }).then((response) => {
+//     console.log(response)
+//   })
+// }
+const userInfo = ref()
+
+const handleGoogleLogin = async () => {
+  const accessToken = await googleTokenLogin({
+    clientId: GOOGLE_CLIENT_ID
+  }).then((response: any) => response?.access_token)
+
+  if (!accessToken) {
+    return '登入失敗'
+  }
+
+  const { data } = await useFetch('/api/auth/google', {
+    method: 'POST',
+    body: {
+      accessToken
+    },
+    // initialCache: false
+  })
+
+  userInfo.value = data.value
 }
 </script>
