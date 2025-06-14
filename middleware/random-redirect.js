@@ -5,4 +5,8 @@ export default defineNuxtRouteMiddleware(() => {
     // }
 
     console.log(`[來自 random-redirect 中間件] 沒發生什麼特別的事情～`)
+    // return abortNavigation({
+    //     statusCode: 403,
+    //     statusMessage: '無頁面權限'
+    // });
 })
