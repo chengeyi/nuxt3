@@ -182,7 +182,8 @@ const { data } = useFetch("https://api.nuxtjs.dev/mountains")
 
 definePageMeta({
   title: '123',
-  middleware: 'random-redirect'
+  middleware: 'random-redirect',
+  layout: 'default'
 })
 
 if (process.server) {
@@ -279,4 +280,12 @@ const handleGoogleLogin = async () => {
 
   userInfo.value = data.value
 }
+
+
+// 判斷裝置
+const { $ua } = useNuxtApp()
+console.log($ua)
+console.log('裝置型態:', $ua.device.type) // mobile / tablet / undefined (桌機)
+console.log('作業系統:', $ua.os.name)     // iOS / Android / macOS / Windows
+console.log('瀏覽器:', $ua.browser.name)  // Chrome / Safari / Edge / ...
 </script>
