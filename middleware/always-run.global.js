@@ -14,4 +14,5 @@ export default defineNuxtRouteMiddleware((to, from) => {
     // if (to.path !== '/haha') {
     //     return navigateTo('/haha')
     // }
+    // return abortNavigation('你沒有權限訪問這個頁面')
 })

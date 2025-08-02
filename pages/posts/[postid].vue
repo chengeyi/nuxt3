@@ -5,6 +5,7 @@
             <p class="my-8 text-3xl text-gray-600">
                 匹配到的 Post Id: <span class="text-5xl font-semibold text-blue-600">{{ postid }}</span>
             </p>
+            <button @click="goBack">goBack</button>
         </div>
     </div>
 </template>
@@ -13,4 +14,8 @@
 const route = useRoute()
 const { postid } = route.params
 console.log(route.params.postid)
+const router = useRouter()
+const goBack = () => {
+    router.back()
+}
 </script>
