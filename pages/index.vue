@@ -93,6 +93,7 @@ let teat = ref(1)
 // console.log(a.value)
 
 onMounted(() => {
+  // 多這行
   var testVar = 1;
   let orgCategory = [
     { categoryId: 1, name: 'A' },
