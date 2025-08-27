@@ -12,7 +12,7 @@
   </template> -->
 <template>
   <div class="bg-white py-24">
-
+    {{ count }}
     <ClientOnly>
       <GoogleLogin :callback="callback" prompt />
     </ClientOnly>
@@ -44,7 +44,8 @@
 import { googleTokenLogin } from 'vue3-google-login'
 
 import { useCounter } from '@/composables/time/useDateFormat'
-const { count, increment } = useCountersss()
+// const { count, increment } = useCountersss()
+const { count, increment } = useCounter()
 
 const toPost = () => {
   navigateTo({
@@ -55,7 +56,6 @@ const toPost = () => {
     query: { from: 'home' }
   })
 }
-
 let teat = ref(1)
 // const { data: a, pending: b, error: c, refresh } = await useFetch('/api/count', {
 //   //只從 JSON 物件中取的某幾個 key 組成新的物件。
@@ -93,6 +93,7 @@ let teat = ref(1)
 // console.log(a.value)
 
 onMounted(() => {
+  var testVar = 1;
   let orgCategory = [
     { categoryId: 1, name: 'A' },
     { categoryId: 4, name: 'D' },

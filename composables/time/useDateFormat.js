@@ -1,5 +1,5 @@
 export const useCounter = () => {
-    const count = ref(0)
+    const count = ref(10)
 
     const increment = () => {
         count.value += 1

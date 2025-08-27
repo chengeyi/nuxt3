@@ -21,8 +21,11 @@
     "@pinia-plugin-persistedstate/nuxt": "^1.2.1",
     "@pinia/nuxt": "^0.5.5",
     "eslint": "^8.57.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
     "google-auth-library": "^10.0.0",
     "pinia": "^3.0.2",
+    "prettier": "^3.6.2",
     "vue-tsc": "^2.2.10",
     "vue3-google-login": "^2.0.33"
   }
