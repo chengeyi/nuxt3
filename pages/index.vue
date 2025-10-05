@@ -12,6 +12,7 @@
   </template> -->
 <template>
   <div class="bg-white py-24">
+    <div @click="sendMessage">WebSocket</div>
     {{ count }}
     <ClientOnly>
       <GoogleLogin :callback="callback" prompt />
@@ -37,6 +38,11 @@
         <div @click="teat += 1">{{ teat }}</div>
       </div>
     </div>
+    <div>{{ person }}</div>
+    <button @click="change">修改</button>
+    <div>is new images</div>
+    <div>is new images2</div>
+    <div>is new images3</div>
   </div>
 </template>
 <script setup lang="ts">
@@ -283,10 +289,68 @@ const handleGoogleLogin = async () => {
 }
 
 
+// 連線 WebSocket
+const message = ref('')
+let socket: WebSocket | null = null
+if (process.client) {
+  socket = new WebSocket('ws://localhost:8080')
+
+  socket.onopen = () => {
+    console.log('WebSocket connected')
+  }
+
+  socket.onmessage = (event) => {
+    console.log('From server:', event.data)
+  }
+}
+
+// 定義在外層，template 才能訪問
+const sendMessage = () => {
+  if (socket) {
+    socket.send('Hello Server!')
+  }
+}
+
+
+
+
 // 判斷裝置
-const { $ua } = useNuxtApp()
-console.log($ua)
-console.log('裝置型態:', $ua.device.type) // mobile / tablet / undefined (桌機)
-console.log('作業系統:', $ua.os.name)     // iOS / Android / macOS / Windows
-console.log('瀏覽器:', $ua.browser.name)  // Chrome / Safari / Edge / ...
+// const { $ua } = useNuxtApp()
+// console.log($ua)
+// console.log('裝置型態:', $ua.device.type) // mobile / tablet / undefined (桌機)
+// console.log('作業系統:', $ua.os.name)     // iOS / Android / macOS / Windows
+// console.log('瀏覽器:', $ua.browser.name)  // Chrome / Safari / Edge / ...
+
+
+const person = reactive({
+  name: 'tony',
+  age: 18,
+  a:{
+    b:123
+  }
+})
+const change = () => {
+  // person = {
+  //   name: 'tony123',
+  //   age: 18,
+  //   a:{
+  //     b:123
+  //   }
+  // }
+  // person.name= 'tony123'
+  person.a={
+    b:456
+  }
+  // person.a.b=456
+}
+watch(()=>person.a, (newVal, oldVal) => {
+  console.log( newVal, oldVal)
+}, 
+// { deep: true }
+)
+
+// ref 監視整個物件 要整個物件改才會監視到 若也要監視物件內的屬性要用 deep: true
+// ref 只監聽物件內某一個屬性變化 要用()=>person.value.name 如果監視裡面的某個物件也要整個物件改才會監視到 若也要監視物件內的屬性要用 deep: true
+// reactive 默認開啟 deep: true 其餘跟第一個ref情形一樣
+// reactive 監聽物件內某一個屬性變化 要用()=>person.name
 </script>
