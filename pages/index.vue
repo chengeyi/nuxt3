@@ -43,7 +43,7 @@
     <div>is new images</div>
     <div>is new images2</div>
     <div>is new images3</div>
-    <div>test CICD 2</div>
+    <div>test CICD 3</div>
   </div>
 </template>
 <script setup lang="ts">

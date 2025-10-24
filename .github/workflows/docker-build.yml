@@ -1,4 +1,4 @@
-name: Build and Push Docker Image
+name: Build, Push and Deploy Docker Image
 
 on:
   push:
@@ -20,7 +20,7 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      # 3️⃣ 建立並推送 image
+      # 3️⃣ Build 並 push image
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
         with:
@@ -28,3 +28,10 @@ jobs:
           tags: |
             tony560/my-nuxt3-app:latest
             tony560/my-nuxt3-app:${{ github.sha }}
+
+      # 4️⃣ 部署到 Mac 本機（假設 docker-compose.yml 在專案根目錄）
+      - name: Pull and restart container
+        run: |
+          docker pull tony560/my-nuxt3-app:latest
+          docker compose down
+          docker compose up -d
