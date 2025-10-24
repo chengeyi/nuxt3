@@ -47,6 +47,7 @@
   </div>
 </template>
 <script setup lang="ts">
+
 // const { count, increment } = useCountersss()
 import { googleTokenLogin } from 'vue3-google-login'
 
@@ -326,8 +327,8 @@ const sendMessage = () => {
 const person = reactive({
   name: 'tony',
   age: 18,
-  a:{
-    b:123
+  a: {
+    b: 123
   }
 })
 const change = () => {
@@ -339,19 +340,96 @@ const change = () => {
   //   }
   // }
   // person.name= 'tony123'
-  person.a={
-    b:456
+  person.a = {
+    b: 456
   }
   // person.a.b=456
 }
-watch(()=>person.a, (newVal, oldVal) => {
-  console.log( newVal, oldVal)
-}, 
-// { deep: true }
+watch(() => person.a, (newVal, oldVal) => {
+  console.log(newVal, oldVal)
+},
+  // { deep: true }
 )
 
 // ref 監視整個物件 要整個物件改才會監視到 若也要監視物件內的屬性要用 deep: true
 // ref 只監聽物件內某一個屬性變化 要用()=>person.value.name 如果監視裡面的某個物件也要整個物件改才會監視到 若也要監視物件內的屬性要用 deep: true
 // reactive 默認開啟 deep: true 其餘跟第一個ref情形一樣
 // reactive 監聽物件內某一個屬性變化 要用()=>person.name
+
+
+
+
+
+
+
+
+
+import { useMutation, useQueryCache, useQuery } from '@pinia/colada'
+import { fetchTodos, createTodoAPI } from '@/api/todo'
+console.log('[Hook]setup')
+const text = ref('')
+// 1️⃣ 讀取 todos
+// const getTodos = async () => {
+let todosDatas = ref<any[]>([])
+let isLoading = ref(false)
+
+if (import.meta.client) {
+  const { data, isLoading: loading } = useQuery({
+    key: ['todos'],
+    query: fetchTodos,
+    staleTime: 10,
+    refetchOnWindowFocus: true,
+  })
+
+  // 監聽 data 變化
+  // watchEffect(() => {
+  //   // 若回傳為陣列就直接指定，否則嘗試提取可能的 payload 或設為空陣列，避免將物件賦值給 any[]
+  //   // if (Array.isArray(data.value)) {
+  //   //   todosDatas.value = data.value
+  //   // } else if (data.value && Array.isArray((data.value as any).todos)) {
+  //   //   todosDatas.value = (data.value as any).todos
+  //   // } else {
+  //   //   todosDatas.value = []
+  //   // }
+  //   if (data.value) todosDatas.value = data.value as any
+
+  //   isLoading.value = loading.value
+  //   console.log('todosData', todosDatas.value)
+  //   console.log('isLoading', isLoading.value)
+  // })
+  console.log('data', data.value)
+  watch(data, (newValue) => {
+    if (newValue) {
+      todosDatas.value = newValue as any
+      console.log('todosDatas 更新了', todosDatas.value)
+    }
+  },{
+    deep: true
+  })
+
+  // 同步 isLoading
+  watch(loading, (newValue, oldValue) => {
+    console.log('isLoading 變化了', oldValue, '->', newValue)
+    isLoading.value = newValue
+  })
+}
+
+
+// const { data: todosData, isLoading } = useTodosQuery() // CSR 專用
+// console.log('isLoading', isLoading.value) 
+// console.log('todosData', todosData.value)
+// }
+
+onBeforeMount(() => {
+  console.log('[Hook]onBeforeMount')
+})
+onMounted(() => {
+  // const cache = useQueryCache()
+  // console.log('cache', cache)
+  // console.log('useMutation', useMutation)
+  console.log('[Hook]onMounted')
+
+  // getTodos()
+})
+
 </script>

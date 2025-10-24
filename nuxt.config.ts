@@ -5,7 +5,7 @@ export default defineNuxtConfig({
   typescript: {
     typeCheck: true
   },
-  modules: ['@pinia/nuxt', '@pinia-plugin-persistedstate/nuxt', '@nuxtjs/seo'],
+  modules: ['@pinia/nuxt', '@pinia-plugin-persistedstate/nuxt', '@nuxtjs/seo', '@pinia/colada-nuxt'],
   // 環境變數
   runtimeConfig: {
     apiSecret: '怎麼可以讓你知道呢 :P',
@@ -19,5 +19,8 @@ export default defineNuxtConfig({
     theme: {
       primaryColor: '#0ea5e9'
     }
-  }
+  },
+  // plugins: [
+  //   '~/plugins/pinia-colada' // ✅ 不要加 .client.ts，只用 .ts 讓它在 SSR 一起載入
+  // ]
 })
