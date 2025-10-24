@@ -6,7 +6,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
       # 1️⃣ 取出原始碼
@@ -29,9 +29,16 @@ jobs:
             tony560/my-nuxt3-app:latest
             tony560/my-nuxt3-app:${{ github.sha }}
 
-      # 4️⃣ 部署到 Mac 本機（假設 docker-compose.yml 在專案根目錄）
+      # 4️⃣ 在本地 Mac 部署最新 image
       - name: Pull and restart container
         run: |
+          echo "停止舊容器並拉取最新 image..."
           docker pull tony560/my-nuxt3-app:latest
-          docker compose down
+          
+          # 如果容器已存在就停止並移除
+          if [ $(docker ps -a -q -f name=nuxt3-app) ]; then
+            docker rm -f nuxt3-app
+          fi
+
+          # 啟動容器
           docker compose up -d
